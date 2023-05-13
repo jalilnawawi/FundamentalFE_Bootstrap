@@ -1,11 +1,13 @@
 import { async } from "regenerator-runtime";
 
+const axios = require("axios");
+
 function sourceData() {
   const baseUrl = "https://fakestoreapi.com/products";
   const getItem = async () => {
     try {
-      const response = await fetch(`${baseUrl}`);
-      const data = await response.json();
+      const response = await axios.get(`${baseUrl}`);
+      const data = await response.data;
       renderAllItems(data);
     } catch (error) {
       showResponseMessage(error);
@@ -18,26 +20,53 @@ function sourceData() {
 
     items.forEach((item) => {
       listItemElement.innerHTML += `
-        <div class="col-lg-4 col-md-6 col-sm-12" style="margin-top: 12px;">
-          <div class="card">
-            <div class="card-body">
-              <h4>${item.title}</h4>
-              <h5> USD ${item.price}</h5>
-              <img src="${item.image}" width="250" height="250"/>
-              <button type="button" class="btn btn-danger button-delete" id="${item.id}">Hapus</button>
+
+      <div class="col col-sm-12 col-md-12 col-lg-4" style="margin-top: 12px; ">
+      <div class="card h-100 w-70 column-container sm">
+        <div class="card-body sm">
+          <div class="container text-center" >
+              <div class="col " style="position: relative;">
+                <div class="container">
+                  <span style="color: orange;
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  position: absolute;
+                  right: -29px;
+                  top: -41px;
+                  padding-left: 5px;
+                  border-bottom-left-radius: 15px;
+                  background-color: #7AA874;
+                  ">&#9733; 
+                  <span style="color: white; padding-right: 7px;">${item.rating.rate.toFixed(
+                    1
+                  )}</span>
+                  </span>
+                </div>
+                <div class="col m-4">
+                  <img src="${item.image}" width="200" height="200"/>
+                </div>
+                <div class="col mb-4 text-ellipsis" style="font-weight: bold; font-size: 14pt; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> ${
+                  item.title
+                }</div>
+              </div>
+          <div class="row">
+            <div class="col my-auto">
+                <div class="col cols-3" style="text-align : left; padding-top:3%; font-size: 15pt" id="usd">${Intl.NumberFormat(
+                  "id-ID",
+                  {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }
+                ).format(item.price * 14000)}</div>
+            </div>
+              <button-app type="button" id="buttonPrice" class="col cols-3 btn my-auto" style="background-color: #FF6000; font-weight:bold; color: white; font-size:18px;">Checkout</button-app>
             </div>
           </div>
         </div>
+      </div>
+    </div>
       `;
-    });
-
-    const buttons = document.querySelectorAll(".button-delete");
-    buttons.forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const itemId = event.target.id;
-
-        removeItem(itemId);
-      });
     });
   };
 
@@ -45,42 +74,7 @@ function sourceData() {
     alert(message);
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const inputItemId = document.querySelector("#inputItemId");
-    const inputItemTitle = document.querySelector("#inputItemTitle");
-    const inputItemPrice = document.querySelector("#inputItemPrice");
-    const inputItemDesc = document.querySelector("#inputItemDesc");
-    const inputItemImage = document.querySelector("#inputItemImage");
-    const inputItemCat = document.querySelector("#inputItemCat");
-    const buttonSave = document.querySelector("#buttonSave");
-    const buttonUpdate = document.querySelector("#buttonUpdate");
-
-    buttonSave.addEventListener("click", function () {
-      const item = {
-        id: Number.parseInt(inputItemId.value),
-        title: inputItemTitle.value,
-        price: inputItemPrice.value,
-        desc: inputItemDesc.value,
-        image: inputItemImage.value,
-        cat: inputItemCat.value,
-      };
-
-      insertItem(item);
-      console.log(item);
-    });
-
-    buttonUpdate.addEventListener("click", function () {
-      const item = {
-        id: Number.parseInt(inputItemId.value),
-        title: inputItemTitle.value,
-        price: inputItemPrice.value,
-        image: inputItemImage.value,
-      };
-
-      updateItem(item);
-    });
-    getItem();
-  });
+  getItem();
 }
 
 export default sourceData;
