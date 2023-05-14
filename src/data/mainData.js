@@ -1,8 +1,8 @@
 import { async } from "regenerator-runtime";
+import formatDollarToRupiah from "../utils/utils";
+import axios from "axios";
 
-const axios = require("axios");
-
-function sourceData() {
+const mainData = () => {
   const baseUrl = "https://fakestoreapi.com/products";
   const getItem = async () => {
     try {
@@ -51,14 +51,9 @@ function sourceData() {
               </div>
           <div class="row">
             <div class="col my-auto">
-                <div class="col cols-3" style="text-align : left; padding-top:3%; font-size: 15pt" id="usd">${Intl.NumberFormat(
-                  "id-ID",
-                  {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                  }
-                ).format(item.price * 14000)}</div>
+                <div class="col cols-3" style="padding-top:3%; font-size: 15pt" id="usd">${formatDollarToRupiah(
+                  item.price
+                )}</div>
             </div>
               <button-app type="button" id="buttonPrice" class="col cols-3 btn my-auto" style="background-color: #FF6000; font-weight:bold; color: white; font-size:18px;">Checkout</button-app>
             </div>
@@ -75,6 +70,6 @@ function sourceData() {
   };
 
   getItem();
-}
+};
 
-export default sourceData;
+export default mainData;

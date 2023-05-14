@@ -9,13 +9,12 @@ module.exports = {
   },
   module: {
     rules: [
-      /* rules buat component */
       {
         test: /\.css$/i,
         exclude: /styles/,
         use: ["to-string-loader", "css-loader"],
       },
-      /* rules buat global style */
+
       {
         test: /\.css$/i,
         include: /styles/,
